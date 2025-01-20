@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import { LoaderWrapper, ProgressBar } from "./Loader.styled.js";
 
 // Set duration i ms
-const duration = 5000;
+const duration = 1000;
 
-export const Loader = () => {
+export const Loader = ({ setLoading }) => {
     // loading stage og progress state
-    const [loading, setLoading] = useState(true);
+
     const [progress, setProgress] = useState(0);
 
     useEffect(() => {
@@ -15,7 +15,8 @@ export const Loader = () => {
             setProgress((prev) => {
                 // Hvis prev er >= 100, set loading = false, og return 100
                 if (prev >= 100) {
-                    setLoading(false);
+                    // Sætter loading til false
+                    setTimeout(() => setLoading(false), 0);
                     return 100;
                 }
                 return prev + 1;
@@ -24,7 +25,7 @@ export const Loader = () => {
 
         // Returnerer en funktion, som cleare intervallet
         return () => clearInterval(interval);
-    }, []);
+    }, [setLoading]);
 
     return (
         <LoaderWrapper>
@@ -34,7 +35,7 @@ export const Loader = () => {
                 <ProgressBar $progress={progress} />
             </div>
             <div>
-                {loading ? <div>Loading...</div> : <div>Data loaded</div>}
+                <h1>Loading...</h1>
             </div>
         </LoaderWrapper>
     );
